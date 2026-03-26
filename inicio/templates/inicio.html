@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -104,7 +106,7 @@
                 </div>
                 <div class="conditions-row">
                     <label>Temperatura : <input type="text" id="ini_temp"></label>
-                    <label>Humedad (id) : <input type="text" id="ini_hum"></label>
+                    <label>Humedad: <input type="text" id="ini_hum"></label>
                     <label>Pres. Atm. : <input type="text" id="ini_pres"></label>
                 </div>
 
@@ -205,11 +207,17 @@
                 <input type="text" id="resultado_2" readonly placeholder="">
                 <input type="text" id="resultado_3" readonly placeholder="">
             </div>
+            
+            <div id="debug-info" style="margin-top: 20px; padding: 10px; background: #f0f0f0; border-radius: 5px; font-family: monospace; font-size: 12px;">
+                <strong>Valores capturados:</strong><br>
+                <span id="debug-values"></span>
+            </div>
+
         </div>
 
     </div>
 
-    <script src="script.js"></script>
+    <script src="{% static 'script/captura_datos.js' %}"></script>
 </body>
 
 </html>
