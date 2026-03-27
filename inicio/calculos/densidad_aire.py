@@ -61,6 +61,6 @@ def monte_carlo_density(t, HR, p, u_t, u_HR, u_p, N=100000):
 
     return rho_mean, u_rho
 
-densidad = air_density(20.2,49.5,652.3)
-densidad_mean, u_densidad = monte_carlo_density(20.2,49.5,652.3, 0.5, 2, 1.50)
-print(f"densidad= {densidad} densidad_media={densidad_mean} U_densidad={u_densidad}")
+#densidad = air_density(20.2,49.5,652.3)
+#densidad_mean, u_densidad = monte_carlo_density(20.2,49.5,652.3, 0.5, 2, 1.50)
+#print(f"densidad= {densidad} densidad_media={densidad_mean} U_densidad={u_densidad}")

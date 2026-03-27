@@ -7,11 +7,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verificación de Planilla de Cálculos</title>
-    <link rel="stylesheet" href="static/css/inicio.css">
+    <link rel="stylesheet" href="{% static 'css/inicio.css' %}">
+
 </head>
 
 <body>
-
+    <!-- Formulario oculto para generar token CSRF -->
+    <form style="display: none;">
+        {% csrf_token %}
+    </form>
+    
     <div class="container">
         <h1>VERIFICACIÓN DE PLANILLA DE CÁLCULOS</h1>
 
