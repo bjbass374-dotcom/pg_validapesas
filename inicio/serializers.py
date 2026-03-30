@@ -12,10 +12,14 @@ class DatosAmbientalesSerializer(serializers.Serializer):
     p_ini = serializers.FloatField(help_text="Presión inicial (mbar)")
     p_fin = serializers.FloatField(help_text="Presión final (mbar)")
     
-    # Campos opcionales con valores por defecto
-    u_t = serializers.FloatField(default=0.5, help_text="Incertidumbre temperatura (°C)")
-    u_h = serializers.FloatField(default=2.0, help_text="Incertidumbre humedad (%)")
-    u_p = serializers.FloatField(default=1.0, help_text="Incertidumbre presión (mbar)")
+
+    # Incertidumbres: pueden ser opcionales porque vendrán del termohigrómetro
+    u_t = serializers.FloatField(required=False, default=0.5)
+    u_h = serializers.FloatField(required=False, default=2.0)
+    u_p = serializers.FloatField(required=False, default=1.0)
+
+    # Campo nuevo: termohigrómetro seleccionado
+    termo_id = serializers.CharField(required=True, help_text="ID del termohigrómetro")
     
     def validate_t_ini(self, value):
         """Validación personalizada: temperatura debe estar entre -50 y 100°C"""
@@ -40,4 +44,8 @@ class DensidadResultadoSerializer(serializers.Serializer):
     t_prom = serializers.FloatField(help_text="Temperatura promedio (°C)")
     h_prom = serializers.FloatField(help_text="Humedad promedio (%)")
     p_prom = serializers.FloatField(help_text="Presión promedio (mbar)")
+    termo_id = serializers.CharField()
+    u_t_used = serializers.FloatField()
+    u_h_used = serializers.FloatField()
+    u_p_used = serializers.FloatField()
     timestamp = serializers.DateTimeField(help_text="Momento del cálculo")

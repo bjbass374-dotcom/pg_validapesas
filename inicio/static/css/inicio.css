@@ -32,27 +32,14 @@ h1 {
     letter-spacing: 1px;
 }
 
-/* Top Selectors */
-.selectors-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 15px;
-    margin-bottom: 30px;
-}
-
-.select-group {
-    flex: 1;
-    min-width: 150px;
-}
-
+/* Estilos generales para selects */
 select {
     width: 100%;
     padding: 12px;
     border-radius: 20px;
     border: none;
     background-color: #9ca3af;
-    color: white;
+    color: rgb(0, 0, 0);
     font-weight: bold;
     font-size: 14px;
     text-align: center;
@@ -62,71 +49,36 @@ select {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s;
 }
-
 select:hover {
     background-color: #6b7280;
 }
-
 select option {
     background-color: white;
     color: black;
     text-align: left;
 }
 
-/* Main Content Layout */
+/* Panel de mediciones */
 .main-content {
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    gap: 20px;
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-/* Títulos de Panel */
+.right-panel {
+    background: white;
+    padding: 20px;
+    border: 2px solid var(--table-border);
+    width: 100%;
+    margin: 0;
+}
+
 .panel-title {
     font-size: 1.2rem;
     font-weight: bold;
     margin-bottom: 15px;
     text-align: center;
-}
-
-/* Left Panel - Readonly Data */
-.left-panel {
-    display: flex;
-    flex-direction: column;
-}
-
-.left-panel .data-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border: 2px solid var(--table-border);
-    background: white;
-}
-
-.data-grid .label,
-.data-grid .value {
-    border: 1px solid var(--table-border);
-    padding: 15px 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-weight: bold;
-}
-
-.data-grid .value input {
-    width: 100%;
-    height: 100%;
-    border: none;
-    background: transparent;
-    text-align: center;
-    font-weight: bold;
-    outline: none;
-}
-
-/* Right Panel - Tables and Inputs */
-.right-panel {
-    background: white;
-    padding: 20px;
-    border: 2px solid var(--table-border);
 }
 
 .section-title {
@@ -152,25 +104,21 @@ select option {
     outline: none;
 }
 
-/* Cycles Table */
+/* Tabla de mediciones */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
     text-align: center;
 }
-
-th,
-td {
+th, td {
     border: 1px solid var(--table-border);
     padding: 8px;
     font-size: 14px;
 }
-
 th {
     font-weight: bold;
 }
-
 td input {
     width: 100%;
     box-sizing: border-box;
@@ -179,25 +127,23 @@ td input {
     text-align: center;
     outline: none;
 }
-
 td input:focus {
     background-color: #ebf8ff;
 }
-
 .am-row input {
     background-color: var(--readonly-bg);
     color: #718096;
 }
 
-/* Bottom Action Area */
+/* Botón y resultados */
 .bottom-actions {
     margin-top: 30px;
     display: flex;
-    align-items: center;
     gap: 20px;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
-
 .btn-calcular {
     background-color: #9ca3af;
     color: white;
@@ -210,16 +156,13 @@ td input:focus {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.2s;
 }
-
 .btn-calcular:hover {
     background-color: #4a5568;
     transform: translateY(-2px);
 }
-
 .btn-calcular:active {
     transform: translateY(0);
 }
-
 .results-container {
     display: flex;
     border: 2px solid var(--table-border);
@@ -227,7 +170,6 @@ td input:focus {
     width: 600px;
     background: var(--readonly-bg);
 }
-
 .results-container input {
     flex: 1;
     border: none;
@@ -238,7 +180,65 @@ td input:focus {
     font-size: 16px;
     outline: none;
 }
-
 .results-container input:last-child {
     border-right: none;
+}
+
+/* Sección DATOS en tres columnas */
+.data-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.data-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+.data-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #a0aec0;
+    color: #2d3748;
+    font-weight: 600;
+}
+.data-field {
+    margin-bottom: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+.data-field label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4a5568;
+    width: 40%;
+}
+.data-field .value {
+    width: 55%;
+}
+.data-field input, .data-field select {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    background: #f7fafc;
+    font-size: 0.85rem;
+}
+.data-field input:read-only, .data-field input[readonly] {
+    background-color: #edf2f7;
+    color: #4a5568;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+    .data-section {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
 }

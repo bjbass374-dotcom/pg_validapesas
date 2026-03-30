@@ -16,6 +16,7 @@ async function ejecutarCalculo() {
     const t_fin = parseFloat(document.getElementById('fin_temp').value);
     const h_fin = parseFloat(document.getElementById('fin_hum').value);
     const p_fin = parseFloat(document.getElementById('fin_pres').value);
+    const termo_id = document.getElementById('sel_termo').value   // solo esto nuevo
     
     // ========== 2. VALIDAR DATOS ==========
     // Verificar que todos los campos estén completos
@@ -49,9 +50,7 @@ async function ejecutarCalculo() {
         h_fin: h_fin,
         p_ini: p_ini,
         p_fin: p_fin,
-        u_t: 0.5,    // Incertidumbre temperatura (°C)
-        u_h: 2.0,    // Incertidumbre humedad (%)
-        u_p: 1.0     // Incertidumbre presión (mbar)
+        termo_id: termo_id
     };
     
     // Mostrar "Calculando..." en los campos de resultado

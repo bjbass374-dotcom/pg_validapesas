@@ -10,6 +10,7 @@ from datetime import datetime
 
 from .serializers import DatosAmbientalesSerializer, DensidadResultadoSerializer
 from .calculos.densidad_aire import air_density, monte_carlo_density
+from .calculos.data_TH import TERMOHIGROMETROS
 
 # Create your views here.
 def inicio(request):
@@ -44,16 +45,31 @@ class CalcularDensidadAPIView(APIView):
         h_fin = datos['h_fin']
         p_ini = datos['p_ini']
         p_fin = datos['p_fin']
-        u_t = datos.get('u_t', 0.5)
-        u_h = datos.get('u_h', 2.0)
-        u_p = datos.get('u_p', 1.0)
         
-        # 3. Calcular promedios
+        # ---- Calcular promedios ----
         t_prom = (t_ini + t_fin) / 2
         h_prom = (h_ini + h_fin) / 2
         p_prom = (p_ini + p_fin) / 2
         
-        # 4. Ejecutar cálculos (tu código Python)
+        
+        # ---- Obtener el termohigrómetro seleccionado ----
+        termo_id = datos.get('termo_id')
+        if termo_id not in TERMOHIGROMETROS:
+            return Response(
+                {'error': f'Termohigrómetro "{termo_id}" no encontrado'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        termo_data = TERMOHIGROMETROS[termo_id]
+        
+        # Usar las incertidumbres del termohigrómetro (sobrescriben valores por defecto)
+        u_t = termo_data['u_t']
+        u_h = termo_data['u_hr']
+        u_p = termo_data['u_p']
+
+
+        
+        # 4. Ejecutar cálculos segun el codigo python en densidad_aire.py
         try:
             densidad_puntual = air_density(t_prom, h_prom, p_prom)
             densidad_media, incertidumbre = monte_carlo_density(
@@ -65,6 +81,7 @@ class CalcularDensidadAPIView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
         
+        
         # 5. Preparar respuesta
         resultado = {
             'densidad_puntual': round(float(densidad_puntual), 8),
@@ -73,6 +90,10 @@ class CalcularDensidadAPIView(APIView):
             't_prom': round(t_prom, 2),
             'h_prom': round(h_prom, 2),
             'p_prom': round(p_prom, 2),
+            'termo_id': termo_id,
+            'u_t_used': u_t,
+            'u_h_used': u_h,
+            'u_p_used': u_p,
             'timestamp': datetime.now()
         }
         
