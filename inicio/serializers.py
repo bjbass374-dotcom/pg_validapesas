@@ -2,24 +2,31 @@
 from rest_framework import serializers
 
 class DatosAmbientalesSerializer(serializers.Serializer):
-    """
-    Serializer para los datos de entrada (lo que llega del frontend)
-    """
-    t_ini = serializers.FloatField(help_text="Temperatura inicial (°C)")
-    t_fin = serializers.FloatField(help_text="Temperatura final (°C)")
-    h_ini = serializers.FloatField(help_text="Humedad inicial (%)")
-    h_fin = serializers.FloatField(help_text="Humedad final (%)")
-    p_ini = serializers.FloatField(help_text="Presión inicial (mbar)")
-    p_fin = serializers.FloatField(help_text="Presión final (mbar)")
-    
+    # Campos ambientales
+    t_ini = serializers.FloatField()
+    t_fin = serializers.FloatField()
+    h_ini = serializers.FloatField()
+    h_fin = serializers.FloatField()
+    p_ini = serializers.FloatField()
+    p_fin = serializers.FloatField()
+    termo_id = serializers.CharField()
 
-    # Incertidumbres: pueden ser opcionales porque vendrán del termohigrómetro
-    u_t = serializers.FloatField(required=False, default=0.5)
-    u_h = serializers.FloatField(required=False, default=2.0)
-    u_p = serializers.FloatField(required=False, default=1.0)
+    # Campos del patrón
+    patron_id = serializers.CharField()
+    clase_patron = serializers.CharField(required=False, allow_blank=True)
+    nominal_patron = serializers.FloatField()
+    unidades_patron = serializers.CharField()
 
-    # Campo nuevo: termohigrómetro seleccionado
-    termo_id = serializers.CharField(required=True, help_text="ID del termohigrómetro")
+    # Campos del DUT
+    rho_t = serializers.FloatField()
+    u_rho_t = serializers.FloatField()
+
+    # Mediciones
+    mediciones = serializers.ListField(
+        child=serializers.ListField(child=serializers.FloatField()),
+        required=True
+    )
+    num_ciclos = serializers.IntegerField(required=False, default=8)
     
     def validate_t_ini(self, value):
         """Validación personalizada: temperatura debe estar entre -50 y 100°C"""
@@ -49,3 +56,6 @@ class DensidadResultadoSerializer(serializers.Serializer):
     u_h_used = serializers.FloatField()
     u_p_used = serializers.FloatField()
     timestamp = serializers.DateTimeField(help_text="Momento del cálculo")
+        # Nuevos campos para masa
+    m_ct = serializers.FloatField(required=False)
+    u_m_ct = serializers.FloatField(required=False)

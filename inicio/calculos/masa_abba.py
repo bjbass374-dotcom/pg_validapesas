@@ -1,6 +1,6 @@
 # apps/inicio/calculos/masa_abba.py
 import numpy as np
-from densidad_aire import air_density
+from .densidad_aire import air_density
 
 def monte_carlo_masa_abba(m_cr, u_cr, rho_t, u_rho_t, rho_r, u_rho_r,
                           t_avg, h_avg, p_avg, u_t, u_h, u_p,
