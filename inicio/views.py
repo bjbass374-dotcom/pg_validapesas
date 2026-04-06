@@ -93,14 +93,14 @@ class CalcularDensidadAPIView(APIView):
             t_prom, h_prom, p_prom,
             u_t, u_h, u_p,
             mediciones,
-            N=10000
+            N=100000
         )
 
         # --- 6. Cálculo de densidad ---
         try:
             densidad_puntual = air_density(t_prom, h_prom, p_prom)
             densidad_media, incertidumbre = monte_carlo_density(
-                t_prom, h_prom, p_prom, u_t, u_h, u_p, N=10000
+                t_prom, h_prom, p_prom, u_t, u_h, u_p, N=100000
             )
         except Exception as e:
             return Response({'error': f'Error en cálculo de densidad: {str(e)}'}, status=500)
