@@ -84,5 +84,8 @@ def monte_carlo_masa_abba(m_cr, u_cr, rho_t, u_rho_t, rho_r, u_rho_r,
     # ---- 7. Estadísticas ----
     m_ct_mean = np.mean(m_ct_samples)
     m_ct_std = np.std(m_ct_samples)
-
+    print(f"delta_I_obs = {delta_I_obs}")
+    print(f"s_delta_I = {s_delta_I}")
+    print(f"m_ct_mean = {m_ct_mean}")
+    print(f"m_ct_std = {m_ct_std}")
     return m_ct_mean, m_ct_std

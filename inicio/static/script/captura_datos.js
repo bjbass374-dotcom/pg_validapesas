@@ -80,7 +80,7 @@ async function ejecutarCalculo() {
     // ========== 4. PREPARAR DATOS PARA LA API ==========
     const datosParaAPI = {
         // Datos ambientales
-        t_ini, t_fin, h_ini, h_fin, p_ini, p_fin,
+        t_prom, h_prom, p_prom,
         termo_id,
         
         // Datos del patrón
@@ -101,6 +101,8 @@ async function ejecutarCalculo() {
     document.getElementById('resultado_1').value = "Calculando...";
     document.getElementById('resultado_2').value = "Calculando...";
     document.getElementById('resultado_3').value = "Calculando...";
+    document.getElementById('resultado_4').value = "Calculando...";
+    document.getElementById('resultado_5').value = "Calculando...";
     
     // ========== 5. ENVIAR PETICIÓN A LA API ==========
     try {
@@ -164,7 +166,6 @@ async function ejecutarCalculo() {
             🔧 DISPOSITIVOS AUXILIARES:<br>
             &nbsp;&nbsp;🌡️ Termohigrómetro: ${resultado.termo_id}<br>
             &nbsp;&nbsp;📊 u_T = ${resultado.u_t_used} °C &nbsp;|&nbsp; u_HR = ${resultado.u_h_used} % &nbsp;|&nbsp; u_P = ${resultado.u_p_used} mbar<br><br>
-            🔄 NÚMERO DE CICLOS UTILIZADOS: ${resultado.num_ciclos !== undefined ? resultado.num_ciclos : 'N/A'}<br>
             ⏱️ Timestamp: ${resultado.timestamp}
         `);
         

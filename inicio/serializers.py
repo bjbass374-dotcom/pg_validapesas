@@ -3,17 +3,13 @@ from rest_framework import serializers
 
 class DatosAmbientalesSerializer(serializers.Serializer):
     # Campos ambientales
-    t_ini = serializers.FloatField()
-    t_fin = serializers.FloatField()
-    h_ini = serializers.FloatField()
-    h_fin = serializers.FloatField()
-    p_ini = serializers.FloatField()
-    p_fin = serializers.FloatField()
+    t_prom = serializers.FloatField()
+    h_prom = serializers.FloatField()
+    p_prom = serializers.FloatField()
     termo_id = serializers.CharField()
 
     # Campos del patrón
     patron_id = serializers.CharField()
-    clase_patron = serializers.CharField(required=False, allow_blank=True)
     nominal_patron = serializers.FloatField()
     unidades_patron = serializers.CharField()
 
@@ -28,17 +24,6 @@ class DatosAmbientalesSerializer(serializers.Serializer):
     )
     num_ciclos = serializers.IntegerField(required=False, default=8)
     
-    def validate_t_ini(self, value):
-        """Validación personalizada: temperatura debe estar entre -50 y 100°C"""
-        if value < -50 or value > 100:
-            raise serializers.ValidationError("Temperatura fuera de rango (-50 a 100°C)")
-        return value
-    
-    def validate_h_ini(self, value):
-        """Validación: humedad entre 0 y 100%"""
-        if value < 0 or value > 100:
-            raise serializers.ValidationError("Humedad debe estar entre 0 y 100%")
-        return value
 
 
 class DensidadResultadoSerializer(serializers.Serializer):

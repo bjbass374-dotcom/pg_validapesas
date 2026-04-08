@@ -24,3 +24,12 @@ staticfiles/
 # Sistema operativo
 .DS_Store
 Thumbs.db
+
+__pycache__/
+*.pyc
+.env
+db.sqlite3
+/staticfiles/
+/media/
+.vscode/
+.idea/

@@ -21,6 +21,7 @@ def inicio(request):
 
 #vista de la API, 
 class CalcularDensidadAPIView(APIView):
+    permission_classes = [AllowAny]  # ← Agrega esta línea
     def post(self, request):
         serializer = DatosAmbientalesSerializer(data=request.data)
         if not serializer.is_valid():
@@ -28,12 +29,9 @@ class CalcularDensidadAPIView(APIView):
         datos = serializer.validated_data
 
         # --- 1. Datos ambientales y termohigrómetro (para incertidumbres) ---
-        t_ini = datos['t_ini']
-        t_fin = datos['t_fin']
-        h_ini = datos['h_ini']
-        h_fin = datos['h_fin']
-        p_ini = datos['p_ini']
-        p_fin = datos['p_fin']
+        t_prom = datos['t_prom']
+        h_prom = datos['h_prom']
+        p_prom = datos['p_prom']
 
         termo_id = datos.get('termo_id')
         if termo_id not in TERMOHIGROMETROS:
@@ -42,11 +40,6 @@ class CalcularDensidadAPIView(APIView):
         u_t = termo_data['u_t']
         u_h = termo_data['u_hr']
         u_p = termo_data['u_p']
-
-        # Promedios ambientales (los usamos tanto para densidad como para masa)
-        t_prom = (t_ini + t_fin) / 2
-        h_prom = (h_ini + h_fin) / 2
-        p_prom = (p_ini + p_fin) / 2
 
         # --- 2. Datos del patrón (desde diccionario) ---
         patron_id = datos['patron_id']
@@ -76,15 +69,10 @@ class CalcularDensidadAPIView(APIView):
         num_ciclos = datos.get('num_ciclos', len(mediciones))
         mediciones = mediciones[:num_ciclos]
 
-        # Convertir a kg si la unidad del patrón no es kg
-        if unidades_patron == 'mg':
-            factor = 1e-6   # mg -> kg
-            mediciones = [[v * factor for v in ciclo] for ciclo in mediciones]
-        elif unidades_patron == 'g':
-            factor = 0.001   # g -> kg
-            mediciones = [[v * factor for v in ciclo] for ciclo in mediciones]
-        # Si es 'kg', no se modifica
 
+        print(f"u_t = {u_t}, u_h = {u_h}, u_p = {u_p}")
+        print(f"u_cr = {u_cr}")
+        print(f"mediciones (primer ciclo): {mediciones[0] if mediciones else 'ninguna'}")
         # --- 5. Cálculo de masa (ahora sí tenemos u_t, u_h, u_p) ---
         m_ct_mean, m_ct_std = monte_carlo_masa_abba(
             m_cr, u_cr,
@@ -117,10 +105,9 @@ class CalcularDensidadAPIView(APIView):
             'u_t_used': u_t,
             'u_h_used': u_h,
             'u_p_used': u_p,
+            'timestamp': datetime.now(),
             'm_ct': round(float(m_ct_mean), 8) if m_ct_mean is not None else None,
             'u_m_ct': round(float(m_ct_std), 8) if m_ct_std is not None else None,
-            'timestamp': datetime.now(),
-            'num_ciclos': num_ciclos,
         }
 
         resultado_serializer = DensidadResultadoSerializer(resultado)
